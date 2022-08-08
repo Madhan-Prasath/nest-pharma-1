@@ -59,7 +59,7 @@ php artisan migrate
 php artisan key:generate
 
 # Create an admin user for the Laravel Nest Pharma backend
-php artisan make:filament-resource User
+php artisan make:filament-user
 
 # add user email in .env SUPER_ADMIN_EMAIL 
 
