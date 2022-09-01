@@ -14,16 +14,16 @@ class Billing extends Model
         parent::boot();
         // updating created_by and updated_by when model is created
         static::creating(function ($model) {
-            if (!$model->isDirty('created_by')) {
+            if (! $model->isDirty('created_by')) {
                 $model->created_by = auth()->user()->email;
             }
-            if (!$model->isDirty('updated_by')) {
+            if (! $model->isDirty('updated_by')) {
                 $model->updated_by = auth()->user()->email;
             }
         });
         // updating updated_by when model is updated
         static::updating(function ($model) {
-            if (!$model->isDirty('updated_by')) {
+            if (! $model->isDirty('updated_by')) {
                 $model->updated_by = auth()->user()->email;
             }
         });
@@ -32,12 +32,17 @@ class Billing extends Model
     protected $fillable = [
         'patch_id',
         'billing_name',
-        'doctor_name'
+        'doctor_name',
+        'specialist_id',
     ];
 
-    public function patch(){
+    public function patch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Patch::class);
     }
 
-
+    public function specialist(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Specialist::class);
+    }
 }

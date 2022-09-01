@@ -4,32 +4,27 @@ namespace App\Filament\Resources;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\StateResource\Pages;
-use App\Filament\Resources\StateResource\RelationManagers;
 use App\Models\State;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Facades\Filament;
 
 Filament::registerNavigationGroups(
     [
         'Master',
         'Location',
         'Sales Manager',
-        'Product'
+        'Doctor',
+        'Product',
     ]
 );
 
@@ -37,10 +32,13 @@ class StateResource extends Resource
 {
     protected static ?string $model = State::class;
 
+    protected static ?string $modelLabel = 'State';
+
     protected static ?string $navigationIcon = 'heroicon-o-globe';
 
 //    protected static bool $isGloballySearchable = true;
-    protected static ?string $navigationGroup = "Location";
+    protected static ?string $navigationGroup = 'Location';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -48,19 +46,17 @@ class StateResource extends Resource
         return $form
             ->schema([
 
-                Card::make()
-                      ->schema([
+                TextInput::make('state')
+                           ->label('Enter State Name')
+                           ->inlineLabel()
+                           ->required(),
 
-                            TextInput::make('state')
-                                       ->label('Enter State Name')
-                                       ->required(),
-  
-                            Toggle::make('status')
-                                    ->label('Status')
-                                    ->required()
-                                    ->default(true)->inline(false),
-  
-                    ])
+                Toggle::make('status')
+                        ->label('Status')
+                        ->required()
+                        ->default(true)
+                        ->inlineLabel(),
+
             ]);
     }
 

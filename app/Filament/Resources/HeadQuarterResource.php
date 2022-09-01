@@ -4,10 +4,7 @@ namespace App\Filament\Resources;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\HeadQuarterResource\Pages;
-use App\Filament\Resources\HeadQuarterResource\RelationManagers;
 use App\Models\HeadQuarter;
-use Barryvdh\DomPDF\Tests\TestCase;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -19,15 +16,17 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class HeadQuarterResource extends Resource
 {
     protected static ?string $model = HeadQuarter::class;
 
+    protected static ?string $label = 'Head Quarters';
+
     protected static ?string $navigationIcon = 'heroicon-o-office-building';
 
     protected static ?string $navigationGroup = 'Location';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -36,7 +35,7 @@ class HeadQuarterResource extends Resource
             ->schema([
 
                 Select::make('state_id')
-                        ->relationship('state' , 'state', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->relationship('state', 'state', fn (Builder $query) => $query->where('status', '=', 1))
                         ->searchable()
                         ->inlineLabel()
                         ->required(),
@@ -59,7 +58,7 @@ class HeadQuarterResource extends Resource
                         ->inlineLabel()
                         ->default(true),
 
-                ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -111,7 +110,7 @@ class HeadQuarterResource extends Resource
                               ->options(
                                   [
                                       1 => 'Active',
-                                      0 => 'De-Active'
+                                      0 => 'De-Active',
                                   ])
                               ->column('status'),
 
@@ -140,10 +139,10 @@ class HeadQuarterResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListHeadQuarters::route('/'),
+            'index' => Pages\ListHeadQuarters::route('/'),
             'create' => Pages\CreateHeadQuarter::route('/create'),
-            'view'   => Pages\ViewHeadQuarter::route('/{record}'),
-            'edit'   => Pages\EditHeadQuarter::route('/{record}/edit'),
+            'view' => Pages\ViewHeadQuarter::route('/{record}'),
+            'edit' => Pages\EditHeadQuarter::route('/{record}/edit'),
         ];
     }
 }

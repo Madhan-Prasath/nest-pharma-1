@@ -4,16 +4,13 @@ namespace App\Filament\Resources;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\BillingResource\Pages;
-use App\Filament\Resources\BillingResource\RelationManagers;
 use App\Models\Billing;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -22,17 +19,18 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Tests\TestCase;
 
 class BillingResource extends Resource
 {
     protected static ?string $model = Billing::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $label = 'Billing';
 
-    protected static ?string $navigationGroup = 'Location';
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationIcon = 'heroicon-o-library';
+
+    protected static ?string $navigationGroup = 'Doctor';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -41,23 +39,33 @@ class BillingResource extends Resource
 
                 Select::make('patch_id')
                         ->label('Patch')
-                        ->relationship('patch' , 'patch', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->relationship('patch', 'patch', fn (Builder $query) => $query->where('status', '=', 1))
                         ->required()
+                        ->inlineLabel()
                         ->searchable(),
 
                 TextInput::make('billing_name')
                            ->label('Billing Name')
                            ->required()
+                           ->inlineLabel()
                            ->placeholder('Store Name'),
 
                 TextInput::make('doctor_name')
                            ->label('Doctor Name')
                            ->required()
+                           ->inlineLabel()
                            ->placeholder('Chemist Name'),
+
+                Select::make('specialist_id')
+                        ->label('Specialist In')
+                        ->relationship('specialist', 'specialist_in', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->inlineLabel()
+                        ->searchable(),
 
                 Toggle::make('status')
                         ->label('Status')
                         ->required()
+                        ->inlineLabel()
                         ->default(true),
 
             ]);
@@ -79,6 +87,11 @@ class BillingResource extends Resource
 
                 TextColumn::make('doctor_name')
                             ->label('Doctor Name')
+                            ->searchable()
+                            ->sortable(),
+
+                TextColumn::make('specialist.specialist_in')
+                            ->label('Specialist In')
                             ->searchable()
                             ->sortable(),
 
@@ -109,9 +122,9 @@ class BillingResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                               ->options([
-                                      1 => 'Active',
-                                      0 => 'De-Active'
-                                  ])
+                                  1 => 'Active',
+                                  0 => 'De-Active',
+                              ])
                               ->column('status'),
 
                 SelectFilter::make('patch')
@@ -141,10 +154,10 @@ class BillingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListBillings::route('/'),
+            'index' => Pages\ListBillings::route('/'),
             'create' => Pages\CreateBilling::route('/create'),
-            'view'   => Pages\ViewBilling::route('/{record}'),
-            'edit'   => Pages\EditBilling::route('/{record}/edit'),
+            'view' => Pages\ViewBilling::route('/{record}'),
+            'edit' => Pages\EditBilling::route('/{record}/edit'),
         ];
     }
 }

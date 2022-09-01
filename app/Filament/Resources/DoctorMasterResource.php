@@ -4,15 +4,12 @@ namespace App\Filament\Resources;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\DoctorMasterResource\Pages;
-use App\Filament\Resources\DoctorMasterResource\RelationManagers;
 use App\Models\DoctorMaster;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -22,15 +19,17 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Svg\Tag\Text;
 
 class DoctorMasterResource extends Resource
 {
     protected static ?string $model = DoctorMaster::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $label = 'Doctor Master';
+
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-check';
+
     protected static ?string $navigationGroup = 'Master';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -39,24 +38,31 @@ class DoctorMasterResource extends Resource
             ->schema([
 
                 Select::make('billing_id')
+                        ->label('Billing & Chemist')
                         ->relationship('billing', 'billing_name', fn (Builder $query) => $query->where('status', '=', 1))
                         ->placeholder('Billing Name , Doctor Name')
-                        ->getOptionLabelFromRecordUsing( fn (Model $record) => "{$record->billing_name} , {$record->doctor_name}"  )
-                        ->searchable(),
+                        ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->billing_name} , {$record->doctor_name}")
+                        ->searchable()
+                        ->inlineLabel()
+                        ->required(),
 
                 Select::make('stockist_id')
+                        ->label('Sales Manager & Stockist')
                         ->relationship('stockist', 'name', fn (Builder $query) => $query->where('status', '=', 1))
                         ->placeholder('Stockist , Sales Manager ')
-                        ->getOptionLabelFromRecordUsing( fn (Model $record) => "{$record->name} , {$record->sales_manager->name}"  )
-                        ->searchable(),
+                        ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->name} , {$record->sales_manager->name}")
+                        ->searchable()
+                        ->inlineLabel()
+                        ->required(),
 
                 Toggle::make('status')
                         ->label('Status')
                         ->required()
-                        ->default(true),
+                        ->default(true)
+                        ->inlineLabel()
+                        ->required(),
 
             ]);
-
     }
 
     public static function table(Table $table): Table
@@ -120,9 +126,9 @@ class DoctorMasterResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                               ->options([
-                                      1 => 'Active',
-                                      0 => 'De-Active'
-                                  ])
+                                  1 => 'Active',
+                                  0 => 'De-Active',
+                              ])
                               ->column('status'),
             ])
 
@@ -149,10 +155,12 @@ class DoctorMasterResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListDoctorMasters::route('/'),
+            'import' => Pages\ImportDoctorMaster::route('/import'),
+            'index' => Pages\ListDoctorMasters::route('/'),
             'create' => Pages\CreateDoctorMaster::route('/create'),
-            'view'   => Pages\ViewDoctorMaster::route('/{record}'),
-            'edit'   => Pages\EditDoctorMaster::route('/{record}/edit'),
+            'view' => Pages\ViewDoctorMaster::route('/{record}'),
+            'edit' => Pages\EditDoctorMaster::route('/{record}/edit'),
+
         ];
     }
 }

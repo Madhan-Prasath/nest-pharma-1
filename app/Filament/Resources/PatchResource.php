@@ -2,35 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Forms\Components\Toggle;
-use Filament\Tables;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use App\Filament\Resources\PatchResource\Pages;
 use App\Models\Patch;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
-use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Resources\Form;
+use Filament\Resources\Resource;
+use Filament\Resources\Table;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Actions\DeleteBulkAction;
-use App\Filament\Resources\PatchResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PatchResource\RelationManagers;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class PatchResource extends Resource
 {
     protected static ?string $model = Patch::class;
 
+    protected static ?string $label = 'Patch';
+
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     protected static ?string $navigationGroup = 'Location';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -39,18 +38,22 @@ class PatchResource extends Resource
             ->schema([
 
                 Select::make('head_quarter_id')
-                        ->relationship('head_quarter','location', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->relationship('head_quarter', 'location', fn (Builder $query) => $query->where('status', '=', 1))
                         ->label('Hq location')
+                        ->placeholder('Erode')
                         ->searchable()
-                        ->required(),
+                        ->required()
+                        ->inlineLabel(),
 
                 TextInput::make('patch')
                            ->label('Patch')
-                           ->required(),
+                           ->required()
+                           ->inlineLabel(),
 
                 Toggle::make('status')
                         ->label('Status')
                         ->required()
+                        ->inlineLabel()
                         ->default(true),
 
             ]);
@@ -98,20 +101,20 @@ class PatchResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                               ->options([
-                                      1 => 'Active',
-                                      0 => 'De-Active'
-                                  ])
+                                  1 => 'Active',
+                                  0 => 'De-Active',
+                              ])
                               ->column('status'),
 
                 SelectFilter::make('HQ Location')
                               ->relationship('head_quarter', 'location')
-                              ->label('HQ Location')
+                              ->label('HQ Location'),
 
             ])
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
 
             ])
             ->bulkActions([
@@ -119,7 +122,6 @@ class PatchResource extends Resource
                 FilamentExportBulkAction::make('export'),
 
             ]);
-
     }
 
     public static function getRelations(): array

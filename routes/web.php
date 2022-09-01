@@ -14,19 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
     return redirect('/admin', 302);
-
 });
-
 
 // Google login
 Route::get('auth/google', 'App\Http\Controllers\Auth\GoogleController@redirectToGoogle');
 Route::get('auth/google/callback', 'App\Http\Controllers\Auth\GoogleController@handleGoogleCallback');
 
-
-if ($loginPage = config('filament.auth.pages.login'))
-
-{
+if ($loginPage = config('filament.auth.pages.login')) {
     Route::get('login', $loginPage)->name('login');
 }

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-
+use Spatie\Permission\Models\Role;
 
 class GoogleController extends Controller
 {
@@ -21,7 +19,6 @@ class GoogleController extends Controller
      */
     public function redirectToGoogle()
     {
-
         return Socialite::driver('google')->redirect();
     }
 
@@ -32,29 +29,23 @@ class GoogleController extends Controller
      */
     public function handleGoogleCallback()
     {
-        try
-        {
+        try {
             $socialUser = Socialite::driver('google')->user();
-        }
-
-        catch (InvalidStateException $exception) {
-
+        } catch (InvalidStateException $exception) {
             return redirect()->route('login')
                 ->withErrors(
                     [
-                        'email' =>  [
-                                        __('Google Login failed, please try again.'),
-                                    ],
+                        'email' => [
+                            __('Google Login failed, please try again.'),
+                        ],
                     ]
                 );
-
         }
 
         // Very Important! Stops anyone with any google accessing auth!
         $googleLoginDomain = env('GOOGLE_LOGIN_DOMAIN', null);
 
         if (! Str::endsWith($socialUser->getEmail(), $googleLoginDomain)) {
-
             return redirect()->route('login')
                 ->withErrors([
                     'email' => [
@@ -66,29 +57,27 @@ class GoogleController extends Controller
         $user = User::where('email', $socialUser->getEmail())->first();
 
         // if user already found
-        if( $user ) {
+        if ($user) {
             // update the avatar that might have changed
             $user->update([
                 // 'avatar'   => $socialUser->avatar,
             ]);
 
-            // $user_role = $user->getRoleNames();
+        // $user_role = $user->getRoleNames();
 
-            // if($user_role->count() == 0){
+        // if($user_role->count() == 0){
 
             //     $role = Role::where('name', '=', 'User')->firstOrFail();
 
             //     $user->roles()->attach($role->id);
-            // }
-
-        }
-        else {
+        // }
+        } else {
             // create a new user
             $user = User::create([
-                'name'          => $socialUser->getName(),
-                'email'         => $socialUser->getEmail(),
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
                 // 'avatar'        => $socialUser->getAvatar(),
-                'password'      => Str::random(32)
+                'password' => Str::random(32),
             ]);
 
             $role = Role::where('name', '=', 'User')->firstOrFail();
@@ -100,5 +89,4 @@ class GoogleController extends Controller
 
         return redirect()->intended('/admin');
     }
-
 }

@@ -18,13 +18,10 @@ class BillingPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->can('viewAny billings') ) {
-
+        if ($user->can('viewAny billings')) {
             return true;
-
         }
     }
-
 
     /**
      * Determine whether the user can view the model.
@@ -35,10 +32,8 @@ class BillingPolicy
      */
     public function view(User $user, Billing $billing)
     {
-
-        if ( $user->can('view billings') ) {    
+        if ($user->can('view billings')) {
             return true;
-        
         }
     }
 

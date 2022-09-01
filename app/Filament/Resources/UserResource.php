@@ -2,67 +2,80 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Tables;
-use Livewire\Component;
+use Filament\Forms\Components\BelongsToManyMultiSelect;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
-use Filament\Resources\Table;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Hash;
+use Filament\Resources\Table;
+use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\BelongsToManyMultiSelect;
-use App\Filament\Resources\UserResource\RelationManagers;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Heloufir\FilamentWorkflowManager\Resources\UserResource\WorkflowPermissions;
+use Illuminate\Support\Facades\Hash;
+use Livewire\Component;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $label = 'User';
+
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
 
-                TextInput::make('name')->required(),
+                TextInput::make('name')
+                            ->required()
+                            ->inlineLabel(),
 
-                TextInput::make('email')->email()->required(),
+                TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->inlineLabel(),
 
                 TextInput::make('password')
-                        ->password()
-                        ->required()
-                        ->maxLength(255)
-                        ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                        ->visible(fn (Component $livewire): bool => $livewire instanceof Pages\CreateUser),
+                          ->password()
+                          ->required()
+                          ->inlineLabel()
+                          ->maxLength(255)
+                          ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                          ->visible(fn (Component $livewire): bool => $livewire instanceof Pages\CreateUser),
 
-                BelongsToManyMultiSelect::make('roles')->relationship('roles', 'name')
+                BelongsToManyMultiSelect::make('roles')
+                                          ->relationship('roles', 'name')
+                                          ->inlineLabel(),
 
             ]);
     }
 
     public static function table(Table $table): Table
     {
-
         return $table
             ->columns([
 
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                            ->searchable()
+                            ->sortable(),
 
-                TextColumn::make('email'),
+                TextColumn::make('email')
+                            ->searchable()
+                            ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->dateTime(),
+                            ->searchable()
+                            ->sortable()
+                            ->dateTime(),
                 TextColumn::make('updated_at')
-                    ->dateTime(),
+                            ->searchable()
+                            ->sortable()
+                            ->dateTime(),
 
             ])
             ->filters([
@@ -77,7 +90,7 @@ class UserResource extends Resource
 
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-                FilamentExportBulkAction::make('export')
+                FilamentExportBulkAction::make('export'),
             ]);
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,10 +12,11 @@ return new class extends Migration
      */
     public function up()
     {
-        $sql = <<<SQL
+        $sql = <<<'SQL'
                     CREATE TABLE sales_managers (
                         id                  BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                         head_quarter_id     BIGINT,
+                        area_manager_id     BIGINT references area_managers(id),
                         name                CITEXT,
                         email               CITEXT,
                         status              BOOLEAN default true,

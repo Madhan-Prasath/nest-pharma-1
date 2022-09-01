@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\SalesManagerResource\Pages;
 
 use App\Filament\Resources\SalesManagerResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateSalesManager extends CreateRecord
