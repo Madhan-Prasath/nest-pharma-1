@@ -30,30 +30,15 @@ class ProductTarget extends Model
     }
 
     protected $fillable = [
-        'product_master_id',
+        'product_id',
         'scope',
         'target',
         'month',
     ];
 
-    public function product_master(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ProductMaster::class);
-    }
-
-    public static function product_master_search()
-    {
-        $product_masters = ProductMaster::where('status', '=', 1)->get();
-        $product_options = [];
-
-        foreach ($product_masters as $product_master) {
-            $data = $product_master->product->name.' , '.$product_master->state->state;
-            $product_options[$product_master->id] = strtoupper($data);
-        }
-
-        asort($product_options);
-
-        return $product_options;
+        return $this->belongsTo(Product::class);
     }
 
     public function head_quarter(): \Illuminate\Database\Eloquent\Relations\BelongsTo

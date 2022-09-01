@@ -18,6 +18,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductTargetResource extends Resource
 {
@@ -30,10 +31,10 @@ class ProductTargetResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('product_master_id')
-                    ->label('Product and Distributed State')
-                    ->placeholder('Product name , State')
-                    ->options(ProductTarget::product_master_search())
+                Select::make('product_id')
+                    ->label('Product')
+                    ->placeholder('Product name')
+                    ->relationship('product', 'name', fn (Builder $query) => $query->where('status', '=', 1))
                     ->required()
                     ->inlineLabel()
                     ->searchable(),
@@ -77,7 +78,7 @@ class ProductTargetResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('product_master.product.name')
+                TextColumn::make('product.name')
                             ->searchable()
                             ->sortable()
                             ->label('Product Name'),
