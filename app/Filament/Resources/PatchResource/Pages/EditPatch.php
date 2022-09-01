@@ -17,5 +17,4 @@ class EditPatch extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
 }

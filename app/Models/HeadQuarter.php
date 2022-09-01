@@ -14,16 +14,16 @@ class HeadQuarter extends Model
         parent::boot();
         // updating created_by and updated_by when model is created
         static::creating(function ($model) {
-            if (!$model->isDirty('created_by')) {
+            if (! $model->isDirty('created_by')) {
                 $model->created_by = auth()->user()->email;
             }
-            if (!$model->isDirty('updated_by')) {
+            if (! $model->isDirty('updated_by')) {
                 $model->updated_by = auth()->user()->email;
             }
         });
         // updating updated_by when model is updated
         static::updating(function ($model) {
-            if (!$model->isDirty('updated_by')) {
+            if (! $model->isDirty('updated_by')) {
                 $model->updated_by = auth()->user()->email;
             }
         });
@@ -33,16 +33,16 @@ class HeadQuarter extends Model
         'state_id',
         'location',
         'code',
-        'status'
+        'status',
     ];
 
-    public function state(){
-
+    public function state()
+    {
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
 
-    public function sales_manager(){
-
+    public function sales_manager()
+    {
         return $this->hasMany(SalesManager::class);
     }
 }

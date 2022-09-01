@@ -53,6 +53,7 @@ CREATE EXTENSION IF NOT EXISTS citext;
 git clone ssh://git@git.bitsathy.ac.in:2222/MadhanPrasath/nest-pharma.git
 
 cd nest-pharma
+chown -Rh www-data storage/framework
 cp .env.example .env
 composer install
 php artisan migrate

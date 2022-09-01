@@ -14,6 +14,13 @@ class ListDoctorMasters extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
+            Actions\Action::make('import')
+                            ->label('Import')
+                            ->url(static::$resource::getUrl('import'))
+                            ->color('primary')
+                            ->outlined(),
+
         ];
     }
 }

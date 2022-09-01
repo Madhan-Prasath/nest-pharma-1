@@ -3,9 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
-
 use Heloufir\FilamentWorkflowManager\Models\Workflow;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WorkflowPolicy
 {

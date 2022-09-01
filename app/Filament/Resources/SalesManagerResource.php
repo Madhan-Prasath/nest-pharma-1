@@ -4,16 +4,13 @@ namespace App\Filament\Resources;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\SalesManagerResource\Pages;
-use App\Filament\Resources\SalesManagerResource\RelationManagers;
 use App\Models\SalesManager;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -22,36 +19,52 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SalesManagerResource extends Resource
 {
     protected static ?string $model = SalesManager::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = "Sales Manager";
+    protected static ?string $label = 'Sales Manager';
+
+    protected static ?string $navigationGroup = 'Sales Manager';
+
     protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
                            ->label('Sales Manager\'s Name')
-                           ->required(),
+                           ->required()
+                           ->inlineLabel(),
 
                 TextInput::make('email')
                            ->label('Sales Manager\'s Email ')
-                           ->required(),
+                           ->required()
+                           ->inlineLabel(),
 
                 Select::make('head_quarter_id')
                         ->label('HQ Location')
-                        ->relationship('head_quarter', 'location' , fn (Builder $query) => $query->where('status', '=', 1))
+                        ->relationship('head_quarter', 'location', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->required()
+                        ->placeholder('Erode')
+                        ->inlineLabel()
+                        ->searchable(),
+
+                Select::make('area_manager_id')
+                        ->label('Area Manager')
+                        ->relationship('area_manager', 'name', fn (Builder $query) => $query->where('status', '=', 1))
+                        ->required()
+                        ->inlineLabel()
                         ->searchable(),
 
                 Toggle::make('status')
                         ->label('Status')
                         ->required()
+                        ->inlineLabel()
                         ->default(true),
 
             ]);
@@ -73,7 +86,13 @@ class SalesManagerResource extends Resource
 
                 TextColumn::make('head_quarter.location')
                             ->label('Head Quarter location')
-                            ->searchable(),
+                            ->searchable()
+                            ->sortable(),
+
+                TextColumn::make('area_manager.name')
+                            ->label('Area Manager')
+                            ->searchable()
+                            ->sortable(),
 
                 BooleanColumn::make('status')
                                ->label('Status'),
@@ -97,14 +116,14 @@ class SalesManagerResource extends Resource
                             ->label('Updated By')
                             ->sortable()
                             ->searchable(),
-                ])
+            ])
 
             ->filters([
                 SelectFilter::make('status')
                               ->options(
                                   [
                                       1 => 'Active',
-                                      0 => 'De-Active'
+                                      0 => 'De-Active',
                                   ])
                               ->column('status'),
 
@@ -114,7 +133,7 @@ class SalesManagerResource extends Resource
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
 
             ])
             ->bulkActions([

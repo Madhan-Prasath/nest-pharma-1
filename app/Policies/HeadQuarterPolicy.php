@@ -22,7 +22,6 @@ class HeadQuarterPolicy
         if ($user->can('viewAny head_quarters')) {
             return true;
         }
-
     }
 
     /**

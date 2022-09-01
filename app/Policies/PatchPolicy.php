@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\Patch;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Patch;
 
 class PatchPolicy
 {
@@ -19,6 +19,7 @@ class PatchPolicy
     {
         //
     }
+
     public function viewAny(User $user)
     {
         if ($user->can('viewAny patches')) {
@@ -38,7 +39,6 @@ class PatchPolicy
         if ($user->can('view patches')) {
             return true;
         }
-
     }
 
     /**

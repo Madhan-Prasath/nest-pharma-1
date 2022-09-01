@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,7 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $sql = <<<SQL
+        $sql = <<<'SQL'
                     CREATE TABLE states (
                         id                  BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                         state               CITEXT,
@@ -25,7 +24,6 @@ return new class extends Migration
                     );
                 SQL;
         DB::statement($sql);
-
     }
 
     /**

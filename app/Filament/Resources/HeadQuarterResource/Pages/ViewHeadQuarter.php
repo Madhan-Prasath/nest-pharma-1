@@ -14,6 +14,10 @@ class ViewHeadQuarter extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
+
+            Actions\Action::make('back')
+                            ->label('Back')
+                            ->url(static::$resource::getUrl('index'))->color('secondary'),
         ];
     }
 }

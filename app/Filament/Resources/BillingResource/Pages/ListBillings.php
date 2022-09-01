@@ -10,7 +10,6 @@ class ListBillings extends ListRecords
 {
     protected static string $resource = BillingResource::class;
 
-
     protected function getActions(): array
     {
         return [
