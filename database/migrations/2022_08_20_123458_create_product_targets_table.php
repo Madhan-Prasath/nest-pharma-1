@@ -15,7 +15,7 @@ return new class extends Migration
         $sql = <<<'SQL'
                     CREATE TABLE product_targets (
                         id                  BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                        product_master_id   BIGINT references product_masters(id),
+                        product_id          BIGINT references products(id),
                         head_quarter_id     BIGINT references head_quarters(id),
                         scope               CITEXT,
                         target              BIGINT,

@@ -9,6 +9,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Heloufir\FilamentWorkflowManager\Models\WorkflowModelStatus;
 use Heloufir\FilamentWorkflowManager\Models\WorkflowPermission;
+use Heloufir\FilamentWorkflowManager\Models\WorkflowStatus;
 use Heloufir\FilamentWorkflowManager\Models\WorkflowUserPermission;
 use Heloufir\FilamentWorkflowManager\Tables\Columns\WorkflowStatusColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,13 +26,14 @@ class Product extends BaseWidget
         $user = auth()->user();
         $canEdit = WorkflowUserPermission::where('user_id', '=', $user->id)->where('workflow_permission_id', '=', $permission_id)->first();
         $model = "App\Models\ProductSale";
-
+        $initiated = WorkflowStatus::where('name', '=', 'Initiated')->first()->id;
+        $rejected = WorkflowStatus::where('name', '=', 'Rejected')->first()->id;
         if ($canEdit != null) {
-            $product_id = WorkflowModelStatus::where('modelable_type', '=', $model)->where('workflow_status_id', '=', 1)->pluck('modelable_id');
+            $product_id = WorkflowModelStatus::where('modelable_type', '=', $model)->where('workflow_status_id', '=', $initiated)->pluck('modelable_id');
 
             return ProductSale::whereIn('id', $product_id);
         } else {
-            $product_id = WorkflowModelStatus::where('modelable_type', '=', $model)->where('workflow_status_id', '=', 3)->pluck('modelable_id');
+            $product_id = WorkflowModelStatus::where('modelable_type', '=', $model)->where('workflow_status_id', '=', $rejected)->pluck('modelable_id');
 
             return ProductSale::whereIn('id', $product_id)->where('created_by', '=', $user->email);
         }
