@@ -138,6 +138,55 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit stockists',   'guard_name' => 'web']);
         Permission::create(['name' => 'delete stockists', 'guard_name' => 'web']);
 
+        // create Free Unit Permissions
+        Permission::create(['name' => 'view free_units',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny free_units', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create free_units', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit free_units',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete free_units', 'guard_name'  => 'web']);
+
+        // create Area Manager Permissions
+        Permission::create(['name' => 'view area_managers',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny area_managers', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create area_managers', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit area_managers',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete area_managers', 'guard_name'  => 'web']);
+
+        // create Specialist Permissions
+        Permission::create(['name' => 'view specialists',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny specialists', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create specialists', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit specialists',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete specialists', 'guard_name'  => 'web']);
+
+        // create Distribution Method Permissions
+        Permission::create(['name' => 'view distribution_methods',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny distribution_methods', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create distribution_methods', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit distribution_methods',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete distribution_methods', 'guard_name'  => 'web']);
+
+        // create Prescription Permissions
+        Permission::create(['name' => 'view prescriptions',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny prescriptions', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create prescriptions', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit prescriptions',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete prescriptions', 'guard_name'  => 'web']);
+
+        // create Product Target Permissions
+        Permission::create(['name' => 'view product_targets',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny product_targets', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create product_targets', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit product_targets',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete product_targets', 'guard_name'  => 'web']);
+
+        // create Sales Manager Target Permissions
+        Permission::create(['name' => 'view sales_manager_targets',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'viewAny sales_manager_targets', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create sales_manager_targets', 'guard_name'  => 'web']);
+        Permission::create(['name' => 'edit sales_manager_targets',   'guard_name'  => 'web']);
+        Permission::create(['name' => 'delete sales_manager_targets', 'guard_name'  => 'web']);
+
         // create User User with default permissions
         $userrole = Role::create(['name' => 'User User']);
         $userrole->givePermissionTo(['view users', 'viewAny users', 'create users']);
@@ -392,6 +441,111 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminrole = Role::create(['name' => 'Stockist Admin']);
         $adminrole->givePermissionTo(['view stockists', 'viewAny stockists', 'create stockists', 'edit stockists', 'delete stockists']);
         $this->command->info('Roles and Permissions granted to Stockist Admin');
+
+        // create Free Unit User with default permissions
+        $userrole = Role::create(['name' => 'Free Unit User']);
+        $userrole->givePermissionTo(['view free_units', 'viewAny free_units', 'create free_units']);
+        $this->command->info('Roles and Permissions granted to Free Unit User');
+
+        // create Free Unit Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Free Unit Manager']);
+        $managerrole->givePermissionTo(['view free_units', 'viewAny free_units', 'create free_units', 'edit free_units']);
+        $this->command->info('Roles and Permissions granted to Free Unit Manager');
+
+        // create Free Unit Admin with default permissions
+        $adminrole = Role::create(['name' => 'Free Unit Admin']);
+        $adminrole->givePermissionTo(['view free_units', 'viewAny free_units', 'create free_units', 'edit free_units', 'delete free_units']);
+        $this->command->info('Roles and Permissions granted to Free Unit Admin');
+
+        // create Area Manager User with default permissions
+        $userrole = Role::create(['name' => 'Area Manager User']);
+        $userrole->givePermissionTo(['view area_managers', 'viewAny area_managers', 'create area_managers']);
+        $this->command->info('Roles and Permissions granted to Area Manager User');
+
+        // create Area Manager Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Area Manager Manager']);
+        $managerrole->givePermissionTo(['view area_managers', 'viewAny area_managers', 'create area_managers', 'edit area_managers']);
+        $this->command->info('Roles and Permissions granted to Area Manager Manager');
+
+        // create Area Manager Admin with default permissions
+        $adminrole = Role::create(['name' => 'Area Manager Admin']);
+        $adminrole->givePermissionTo(['view area_managers', 'viewAny area_managers', 'create area_managers', 'edit area_managers', 'delete area_managers']);
+        $this->command->info('Roles and Permissions granted to Area Manager Admin');
+
+        // create Specialist User with default permissions
+        $userrole = Role::create(['name' => 'Specialist User']);
+        $userrole->givePermissionTo(['view specialists', 'viewAny specialists', 'create specialists']);
+        $this->command->info('Roles and Permissions granted to Specialist User');
+
+        // create Specialist Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Specialist Manager']);
+        $managerrole->givePermissionTo(['view specialists', 'viewAny specialists', 'create specialists', 'edit specialists']);
+        $this->command->info('Roles and Permissions granted to Specialist Manager');
+
+        // create Specialist Admin with default permissions
+        $adminrole = Role::create(['name' => 'Specialist Admin']);
+        $adminrole->givePermissionTo(['view specialists', 'viewAny specialists', 'create specialists', 'edit specialists', 'delete specialists']);
+        $this->command->info('Roles and Permissions granted to Specialist Admin');
+
+        // create Distribution Method User with default permissions
+        $userrole = Role::create(['name' => 'Distribution Method User']);
+        $userrole->givePermissionTo(['view distribution_methods', 'viewAny distribution_methods', 'create distribution_methods']);
+        $this->command->info('Roles and Permissions granted to Distribution Method User');
+
+        // create Distribution Method Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Distribution Method Manager']);
+        $managerrole->givePermissionTo(['view distribution_methods', 'viewAny distribution_methods', 'create distribution_methods', 'edit distribution_methods']);
+        $this->command->info('Roles and Permissions granted to Distribution Method Manager');
+
+        // create Distribution Method Admin with default permissions
+        $adminrole = Role::create(['name' => 'Distribution Method Admin']);
+        $adminrole->givePermissionTo(['view distribution_methods', 'viewAny distribution_methods', 'create distribution_methods', 'edit distribution_methods', 'delete distribution_methods']);
+        $this->command->info('Roles and Permissions granted to Distribution Method Admin');
+
+        // create Prescription User with default permissions
+        $userrole = Role::create(['name' => 'Prescription User']);
+        $userrole->givePermissionTo(['view prescriptions', 'viewAny prescriptions', 'create prescriptions']);
+        $this->command->info('Roles and Permissions granted to Prescription User');
+
+        // create Prescription Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Prescription Manager']);
+        $managerrole->givePermissionTo(['view prescriptions', 'viewAny prescriptions', 'create prescriptions', 'edit prescriptions']);
+        $this->command->info('Roles and Permissions granted to Prescription Manager');
+
+        // create Prescription Admin with default permissions
+        $adminrole = Role::create(['name' => 'Prescription Admin']);
+        $adminrole->givePermissionTo(['view prescriptions', 'viewAny prescriptions', 'create prescriptions', 'edit prescriptions', 'delete prescriptions']);
+        $this->command->info('Roles and Permissions granted to Prescription Admin');
+
+        // create Product Target User with default permissions
+        $userrole = Role::create(['name' => 'Product Target User']);
+        $userrole->givePermissionTo(['view product_targets', 'viewAny product_targets', 'create product_targets']);
+        $this->command->info('Roles and Permissions granted to Product Target User');
+
+        // create Product Target Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Product Target Manager']);
+        $managerrole->givePermissionTo(['view product_targets', 'viewAny product_targets', 'create product_targets', 'edit product_targets']);
+        $this->command->info('Roles and Permissions granted to Product Target Manager');
+
+        // create Product Target Admin with default permissions
+        $adminrole = Role::create(['name' => 'Product Target Admin']);
+        $adminrole->givePermissionTo(['view product_targets', 'viewAny product_targets', 'create product_targets', 'edit product_targets', 'delete product_targets']);
+        $this->command->info('Roles and Permissions granted to Product Target Admin');
+
+        // create Sales Manager Target User with default permissions
+        $userrole = Role::create(['name' => 'Sales Manager Target User']);
+        $userrole->givePermissionTo(['view sales_manager_targets', 'viewAny sales_manager_targets', 'create sales_manager_targets']);
+        $this->command->info('Roles and Permissions granted to Sales Manager Target User');
+
+        // create Sales Manager Target Manager role with default permissions
+        $managerrole = Role::create(['name' => 'Sales Manager Target Manager']);
+        $managerrole->givePermissionTo(['view sales_manager_targets', 'viewAny sales_manager_targets', 'create sales_manager_targets', 'edit sales_manager_targets']);
+        $this->command->info('Roles and Permissions granted to Sales Manager Target Manager');
+
+        // create Sales Manager Target Admin with default permissions
+        $adminrole = Role::create(['name' => 'Sales Manager Target Admin']);
+        $adminrole->givePermissionTo(['view sales_manager_targets', 'viewAny sales_manager_targets', 'create sales_manager_targets', 'edit sales_manager_targets', 'delete sales_manager_targets']);
+        $this->command->info('Roles and Permissions granted to Sales Manager Target Admin');
 
         // User Role
         $user_role = Role::create(['name' => 'User']);
