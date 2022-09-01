@@ -1,5 +1,5 @@
 <form wire:submit.prevent="authenticate" class="space-y-8">
-    {{-- <img src="{{ URL::to('assets/images/logo/logo.png') }}" alt="Logo"> --}}
+     <img src="{{ URL::to('assets/images/logo/logo_nest.png') }}" alt="Logo">
 
     {{ $this->form }}
 

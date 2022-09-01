@@ -28,14 +28,14 @@
                 x-transition:enter-end="opacity-100"
             @endif
         >
-            {{-- <x-filament::brand /> --}}
-{{--            <img src="{{ URL::to('assets/images/logo/logo.png') }}" style="--}}
-{{--                display: block;--}}
-{{--                margin-left: auto;--}}
-{{--                margin-right: auto;--}}
-{{--                width: 55%;--}}
-{{--            " alt="Logo">--}}
-            <h2 style="font-size:  20px">Nest Pharma Portal</h2>
+             <x-filament::brand />
+            <img src="{{ URL::to('assets/images/logo/logo_nest.png') }}" style="
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            " alt="Logo">
+            <!-- <h2 style="font-size:  20px">Nest Pharma Portal</h2> -->
         </a>
         <a
             href="{{ config('filament.home_url') }}"
