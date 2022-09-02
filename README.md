@@ -50,7 +50,7 @@ CREATE EXTENSION IF NOT EXISTS citext;
 ### Install application dependencies and DB migration
 
 ```sh
-git clone ssh://git@git.bitsathy.ac.in:2222/MadhanPrasath/nest-pharma.git
+git clone git@github.com:nest-pharma/nest-pharma.github.io.git
 
 cd nest-pharma
 chown -Rh www-data storage/framework
